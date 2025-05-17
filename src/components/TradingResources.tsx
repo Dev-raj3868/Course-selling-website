@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, LineChart, TrendingUp, Briefcase, FileText, ArrowRight } from "lucide-react";
+import { ChevronRight, LineChart, TrendingUp, Briefcase, FileText, ArrowRight, ExternalLink } from "lucide-react";
 
 const resourceData = [
   {
@@ -53,6 +53,18 @@ const TradingResources = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Get access to premium trading resources designed to help you make informed trading decisions and improve your overall performance.
           </p>
+          
+          {/* New Website Link */}
+          <div className="mt-6">
+            <a 
+              href="https://knowledgewaveindia.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+            >
+              Visit Knowledge Wave India <ExternalLink size={16} />
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -74,11 +86,21 @@ const TradingResources = () => {
                 </div>
               ))}
             </div>
-            <div className="mt-10">
+            <div className="mt-10 flex flex-wrap gap-4 items-center justify-center md:justify-start">
               <Button className="primary-button flex items-center group text-lg py-6 px-8">
                 Explore All Resources 
                 <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
+              
+              {/* Additional Website Link */}
+              <a 
+                href="https://knowledgewaveindia.com/package/creator-wave" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center py-2 px-4 text-primary hover:text-primary/80 transition-colors"
+              >
+                Creator Wave Package <ExternalLink size={16} className="ml-1" />
+              </a>
             </div>
           </div>
           
