@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,10 +14,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 215 60% 25%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 43 80% 60%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -98,4 +92,32 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+
+.feature-card {
+  @apply bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100;
+}
+
+.section-title {
+  @apply text-3xl font-bold mb-6 text-primary;
+}
+
+.section-subtitle {
+  @apply text-xl mb-8 text-gray-600 max-w-2xl mx-auto;
+}
+
+.section-container {
+  @apply py-16 px-4 md:px-8 lg:px-12 max-w-7xl mx-auto;
+}
+
+.cta-button {
+  @apply bg-secondary hover:bg-secondary/90 text-black font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.primary-button {
+  @apply bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg;
 }
