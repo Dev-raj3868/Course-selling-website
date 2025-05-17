@@ -1,7 +1,8 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, LineChart, TrendingUp, Briefcase, FileText } from "lucide-react";
+import { ChevronRight, LineChart, TrendingUp, Briefcase, FileText, ArrowRight } from "lucide-react";
 
 const resourceData = [
   {
@@ -36,65 +37,110 @@ const resourceData = [
 
 const TradingResources = () => {
   return (
-    <section id="trading" className="section-container">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold mb-6 text-gray-900">
-              Trading Resources to <span className="gradient-text">Accelerate Your Success</span>
-            </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Get access to premium trading resources designed to help you make informed trading decisions and improve your overall performance.
-            </p>
-            <div className="space-y-6">
+    <section id="trading" className="py-24 px-4 bg-gradient-to-b from-blue-50 to-white relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-80 h-80 bg-secondary/10 rounded-full filter blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl"></div>
+      <div className="absolute top-1/3 left-1/4 w-12 h-12 bg-primary/20 rounded-full"></div>
+      <div className="absolute bottom-1/4 right-1/3 w-20 h-20 bg-secondary/20 rounded-full"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <Badge className="mb-4 bg-secondary/20 text-secondary hover:bg-secondary/30 border-none">Premium Resources</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Trading Resources to <span className="gradient-text">Accelerate Your Success</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Get access to premium trading resources designed to help you make informed trading decisions and improve your overall performance.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left side - Resources */}
+          <div className="lg:col-span-5">
+            <div className="space-y-8">
               {resourceData.map((resource) => (
-                <div key={resource.id} className="flex gap-4">
-                  <div className={`${resource.color} p-3 rounded-xl h-12 w-12 flex items-center justify-center flex-shrink-0`}>
+                <div 
+                  key={resource.id} 
+                  className="flex gap-6 bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+                >
+                  <div className={`${resource.color} p-4 rounded-2xl h-16 w-16 flex items-center justify-center flex-shrink-0`}>
                     {resource.icon}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm">{resource.description}</p>
+                    <h3 className="text-lg font-bold text-gray-800 mb-2">{resource.title}</h3>
+                    <p className="text-gray-600">{resource.description}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-8">
-              <Button className="primary-button flex items-center">
-                Explore Resources <ChevronRight size={18} className="ml-1" />
+            <div className="mt-10">
+              <Button className="primary-button flex items-center group text-lg py-6 px-8">
+                Explore All Resources 
+                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
           </div>
-          <div className="relative">
-            <div className="absolute -z-10 top-0 right-0 w-72 h-72 bg-primary/10 rounded-full filter blur-3xl"></div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Card className="feature-card col-span-1 row-span-1">
+          
+          {/* Right side - Cards */}
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 sm:grid-cols-6 gap-6 relative">
+              {/* Large feature card */}
+              <Card className="sm:col-span-6 feature-card bg-gradient-to-br from-primary to-primary/80 text-white overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div>
+                      <Badge className="bg-white/20 text-white hover:bg-white/30 border-none mb-4">Featured</Badge>
+                      <h3 className="text-2xl font-bold mb-3">Pro Trading Masterclass</h3>
+                      <p className="text-white/90 mb-6 max-w-md">
+                        An intensive 8-week program guided by professional traders with real market experience.
+                      </p>
+                      <Button className="bg-white text-primary hover:bg-white/90">
+                        Learn More
+                      </Button>
+                    </div>
+                    <div className="hidden md:block mt-6 md:mt-0">
+                      <div className="w-32 h-32 rounded-full bg-white/10 flex items-center justify-center">
+                        <TrendingUp size={64} className="text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Smaller cards */}
+              <Card className="sm:col-span-3 feature-card border-none shadow-lg hover:shadow-xl transition-all">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold mb-2">Premium Analysis</h3>
-                  <p className="text-sm text-gray-600">Daily market insights from professional traders</p>
-                  <div className="mt-4 py-3 px-4 bg-gray-50 rounded-lg flex items-center justify-between">
+                  <h3 className="font-bold text-lg mb-3">Premium Analysis</h3>
+                  <p className="text-gray-600 mb-4">Daily market insights from professional traders</p>
+                  <div className="py-3 px-4 bg-gray-50 rounded-lg flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors">
                     <span className="text-sm font-medium">View Sample</span>
                     <ChevronRight size={16} />
                   </div>
                 </CardContent>
               </Card>
-              <Card className="feature-card col-span-1 row-span-1 bg-gradient-to-br from-primary to-primary/80 text-white">
+              
+              <Card className="sm:col-span-3 feature-card bg-gradient-to-br from-secondary/80 to-secondary text-black">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold mb-2">Trading Signals</h3>
-                  <p className="text-sm text-white/80">Get alerts on potential market opportunities</p>
-                  <Button className="mt-4 bg-white text-primary hover:bg-white/90 w-full">Subscribe</Button>
+                  <h3 className="font-bold text-lg mb-3">Trading Signals</h3>
+                  <p className="text-black/80 mb-4">Get alerts on potential market opportunities</p>
+                  <Button className="bg-black text-white hover:bg-black/90 w-full">Subscribe</Button>
                 </CardContent>
               </Card>
-              <Card className="feature-card col-span-2 sm:col-span-2">
+              
+              <Card className="sm:col-span-6 feature-card border-none shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-semibold">Monthly Trading Webinars</h3>
-                    <Badge className="bg-secondary text-black">Live</Badge>
+                    <h3 className="font-bold text-lg">Monthly Trading Webinars</h3>
+                    <Badge className="bg-red-500 text-white animate-pulse">Live</Badge>
                   </div>
-                  <p className="text-sm text-gray-600 mb-4">Interactive sessions with experienced traders to discuss current market conditions and strategies.</p>
-                  <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/5">
-                    View Schedule
-                  </Button>
+                  <p className="text-gray-600 mb-4">Interactive sessions with experienced traders to discuss current market conditions and strategies.</p>
+                  <div className="flex justify-between items-center">
+                    <Badge className="bg-gray-100 text-gray-700">Next: June 15</Badge>
+                    <Button variant="outline" className="border-primary text-primary hover:bg-primary/5">
+                      View Schedule
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
