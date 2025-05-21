@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -26,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { UserPlus, Mail, Lock, User } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -58,12 +58,21 @@ export default function Signup() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     
-    // This would be replaced by your actual signup logic
-    console.log(values);
-    
+    // This would be replaced by your actual signup logic in a real application
+    // For now, we'll simulate a successful signup after a short delay
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/login");
+      
+      // For demo purposes, we'll store the user info in localStorage
+      // In a real app, you would use proper authentication with JWT tokens or sessions
+      const newUser = {
+        name: values.name,
+        email: values.email,
+      };
+      
+      localStorage.setItem("user", JSON.stringify(newUser));
+      toast.success("Account created successfully!");
+      navigate("/dashboard");
     }, 1500);
   }
 

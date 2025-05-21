@@ -1,7 +1,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AlignRight, X, Book, BarChart3 } from "lucide-react";
+import { AlignRight, X, Book, BarChart3, LogIn, UserPlus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,11 +12,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
-            <a href="/" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <span className="text-2xl font-bold text-primary">Dome</span>
               <span className="text-2xl font-bold text-secondary">of</span>
               <span className="text-2xl font-bold text-primary">Money</span>
-            </a>
+            </Link>
           </div>
           
           {/* Desktop navigation */}
@@ -24,7 +25,18 @@ const Navbar = () => {
             <a href="#trading" className="text-gray-700 hover:text-primary font-medium transition-colors">Trading</a>
             <a href="#testimonials" className="text-gray-700 hover:text-primary font-medium transition-colors">Testimonials</a>
             <a href="#contact" className="text-gray-700 hover:text-primary font-medium transition-colors">Contact</a>
-            <Button className="cta-button">Get Started</Button>
+            <div className="flex space-x-3">
+              <Button variant="outline" className="flex items-center gap-2" asChild>
+                <Link to="/login">
+                  <LogIn className="h-4 w-4" /> Login
+                </Link>
+              </Button>
+              <Button className="cta-button flex items-center gap-2" asChild>
+                <Link to="/signup">
+                  <UserPlus className="h-4 w-4" /> Sign Up
+                </Link>
+              </Button>
+            </div>
           </nav>
           
           {/* Mobile menu button */}
@@ -78,7 +90,16 @@ const Navbar = () => {
             >
               Contact
             </a>
-            <Button className="w-full cta-button">Get Started</Button>
+            <Link to="/login" className="block w-full" onClick={() => setIsOpen(false)}>
+              <Button variant="outline" className="w-full justify-center flex items-center gap-2">
+                <LogIn className="h-4 w-4" /> Login
+              </Button>
+            </Link>
+            <Link to="/signup" className="block w-full" onClick={() => setIsOpen(false)}>
+              <Button className="w-full cta-button justify-center flex items-center gap-2">
+                <UserPlus className="h-4 w-4" /> Sign Up
+              </Button>
+            </Link>
           </div>
         </div>
       )}

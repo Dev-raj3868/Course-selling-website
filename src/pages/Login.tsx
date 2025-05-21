@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -25,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { LogIn, Mail, Lock } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -46,12 +46,21 @@ export default function Login() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     
-    // This would be replaced by your actual login logic
-    console.log(values);
-    
+    // This would be replaced by your actual login logic in a real application
+    // For now, we'll simulate a successful login after a short delay
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/");
+      
+      // For demo purposes, we'll store some simple user info in localStorage
+      // In a real app, you would use proper authentication with JWT tokens or sessions
+      const demoUser = {
+        email: values.email,
+        name: values.email.split('@')[0], // Just for demo purposes
+      };
+      
+      localStorage.setItem("user", JSON.stringify(demoUser));
+      toast.success("Login successful!");
+      navigate("/dashboard");
     }, 1500);
   }
 
