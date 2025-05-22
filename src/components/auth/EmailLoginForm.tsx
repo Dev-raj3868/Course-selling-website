@@ -28,9 +28,10 @@ type EmailFormValues = z.infer<typeof emailFormSchema>;
 interface EmailLoginFormProps {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  captchaVerified: boolean;
 }
 
-export function EmailLoginForm({ isLoading, setIsLoading }: EmailLoginFormProps) {
+export function EmailLoginForm({ isLoading, setIsLoading, captchaVerified }: EmailLoginFormProps) {
   const navigate = useNavigate();
   
   const form = useForm<EmailFormValues>({
@@ -42,6 +43,11 @@ export function EmailLoginForm({ isLoading, setIsLoading }: EmailLoginFormProps)
   });
 
   function onSubmit(values: EmailFormValues) {
+    if (!captchaVerified) {
+      toast.error("Please verify you are human first");
+      return;
+    }
+    
     setIsLoading(true);
     
     // This would be replaced by your actual login logic in a real application
@@ -116,7 +122,7 @@ export function EmailLoginForm({ isLoading, setIsLoading }: EmailLoginFormProps)
         <Button 
           type="submit" 
           className="w-full"
-          disabled={isLoading}
+          disabled={isLoading || !captchaVerified}
         >
           {isLoading ? (
             <motion.div
@@ -127,6 +133,9 @@ export function EmailLoginForm({ isLoading, setIsLoading }: EmailLoginFormProps)
           ) : null}
           {isLoading ? "Logging in..." : "Log in"}
         </Button>
+        {!captchaVerified && (
+          <p className="text-amber-600 text-sm text-center">Please verify the captcha to continue</p>
+        )}
       </form>
     </Form>
   );

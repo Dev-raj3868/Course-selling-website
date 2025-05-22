@@ -43,28 +43,26 @@ export default function Login() {
               Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-4">
-            {!captchaVerified ? (
-              <div className="space-y-4">
-                <h3 className="font-medium text-center">Please verify you are human</h3>
-                <Captcha onVerify={handleCaptchaVerify} />
-              </div>
-            ) : (
-              <Tabs defaultValue="email">
-                <TabsList className="grid grid-cols-2 mb-4">
-                  <TabsTrigger value="email">Email & Password</TabsTrigger>
-                  <TabsTrigger value="otp">OTP</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="email" className="mt-0">
-                  <EmailLoginForm isLoading={isLoading} setIsLoading={setIsLoading} />
-                </TabsContent>
-                
-                <TabsContent value="otp" className="mt-0">
-                  <OtpLoginForm isLoading={isLoading} setIsLoading={setIsLoading} />
-                </TabsContent>
-              </Tabs>
-            )}
+          <CardContent className="pt-4 space-y-4">
+            <div className="space-y-2">
+              <h3 className="font-medium text-center">Please verify you are human</h3>
+              <Captcha onVerify={handleCaptchaVerify} />
+            </div>
+
+            <Tabs defaultValue="email">
+              <TabsList className="grid grid-cols-2 mb-4">
+                <TabsTrigger value="email">Email & Password</TabsTrigger>
+                <TabsTrigger value="otp">OTP</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="email" className="mt-0">
+                <EmailLoginForm isLoading={isLoading} setIsLoading={setIsLoading} captchaVerified={captchaVerified} />
+              </TabsContent>
+              
+              <TabsContent value="otp" className="mt-0">
+                <OtpLoginForm isLoading={isLoading} setIsLoading={setIsLoading} captchaVerified={captchaVerified} />
+              </TabsContent>
+            </Tabs>
           </CardContent>
           <CardFooter>
             <div className="text-sm text-center w-full">

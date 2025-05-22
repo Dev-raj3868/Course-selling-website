@@ -29,9 +29,10 @@ type OtpFormValues = z.infer<typeof otpFormSchema>;
 interface OtpLoginFormProps {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  captchaVerified: boolean;
 }
 
-export function OtpLoginForm({ isLoading, setIsLoading }: OtpLoginFormProps) {
+export function OtpLoginForm({ isLoading, setIsLoading, captchaVerified }: OtpLoginFormProps) {
   const navigate = useNavigate();
   const [otpSent, setOtpSent] = useState(false);
   
@@ -44,6 +45,11 @@ export function OtpLoginForm({ isLoading, setIsLoading }: OtpLoginFormProps) {
   });
 
   function sendOtp(email: string) {
+    if (!captchaVerified) {
+      toast.error("Please verify you are human first");
+      return;
+    }
+
     setIsLoading(true);
     
     // This would be replaced by your actual OTP sending logic in a real application
@@ -55,6 +61,11 @@ export function OtpLoginForm({ isLoading, setIsLoading }: OtpLoginFormProps) {
   }
 
   function onSubmit(values: OtpFormValues) {
+    if (!captchaVerified) {
+      toast.error("Please verify you are human first");
+      return;
+    }
+    
     setIsLoading(true);
     
     // This would be replaced by your actual OTP verification logic in a real application
@@ -102,7 +113,7 @@ export function OtpLoginForm({ isLoading, setIsLoading }: OtpLoginFormProps) {
           <Button 
             type="button" 
             className="w-full"
-            disabled={isLoading || !form.getValues("email")}
+            disabled={isLoading || !form.getValues("email") || !captchaVerified}
             onClick={() => sendOtp(form.getValues("email"))}
           >
             {isLoading ? (
@@ -163,7 +174,7 @@ export function OtpLoginForm({ isLoading, setIsLoading }: OtpLoginFormProps) {
             <Button 
               type="submit" 
               className="w-full"
-              disabled={isLoading}
+              disabled={isLoading || !captchaVerified}
             >
               {isLoading ? (
                 <motion.div
@@ -175,6 +186,10 @@ export function OtpLoginForm({ isLoading, setIsLoading }: OtpLoginFormProps) {
               {isLoading ? "Verifying..." : "Verify OTP"}
             </Button>
           </>
+        )}
+        
+        {!captchaVerified && (
+          <p className="text-amber-600 text-sm text-center">Please verify the captcha to continue</p>
         )}
       </form>
     </Form>
