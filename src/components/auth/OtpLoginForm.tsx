@@ -18,6 +18,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { toast } from "sonner";
+import { Captcha } from "@/components/Captcha";
 
 const otpFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -30,9 +31,10 @@ interface OtpLoginFormProps {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   captchaVerified: boolean;
+  onCaptchaVerify: () => void;
 }
 
-export function OtpLoginForm({ isLoading, setIsLoading, captchaVerified }: OtpLoginFormProps) {
+export function OtpLoginForm({ isLoading, setIsLoading, captchaVerified, onCaptchaVerify }: OtpLoginFormProps) {
   const navigate = useNavigate();
   const [otpSent, setOtpSent] = useState(false);
   
@@ -108,6 +110,11 @@ export function OtpLoginForm({ isLoading, setIsLoading, captchaVerified }: OtpLo
             </FormItem>
           )}
         />
+        
+        <div className="space-y-2">
+          <h3 className="font-medium text-sm">Please verify you are human</h3>
+          <Captcha onVerify={onCaptchaVerify} />
+        </div>
         
         {!otpSent ? (
           <Button 

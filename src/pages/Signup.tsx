@@ -26,6 +26,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { UserPlus, Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
+import { Captcha } from "@/components/Captcha";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -43,6 +44,7 @@ const formSchema = z.object({
 export default function Signup() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,6 +58,11 @@ export default function Signup() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!captchaVerified) {
+      toast.error("Please verify you are human first");
+      return;
+    }
+
     setIsLoading(true);
     
     // This would be replaced by your actual signup logic in a real application
@@ -75,6 +82,10 @@ export default function Signup() {
       navigate("/dashboard");
     }, 1500);
   }
+
+  const handleCaptchaVerify = () => {
+    setCaptchaVerified(true);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 p-4">
@@ -179,6 +190,12 @@ export default function Signup() {
                     </FormItem>
                   )}
                 />
+
+                <div className="space-y-2">
+                  <h3 className="font-medium text-sm">Please verify you are human</h3>
+                  <Captcha onVerify={handleCaptchaVerify} />
+                </div>
+
                 <FormField
                   control={form.control}
                   name="terms"
@@ -210,7 +227,7 @@ export default function Signup() {
                 <Button 
                   type="submit" 
                   className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                  disabled={isLoading}
+                  disabled={isLoading || !captchaVerified}
                 >
                   {isLoading ? (
                     <motion.div
@@ -221,6 +238,10 @@ export default function Signup() {
                   ) : null}
                   {isLoading ? "Creating account..." : "Create account"}
                 </Button>
+
+                {!captchaVerified && (
+                  <p className="text-amber-600 text-sm text-center">Please verify the captcha to continue</p>
+                )}
               </form>
             </Form>
           </CardContent>

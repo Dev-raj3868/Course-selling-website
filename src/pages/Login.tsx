@@ -44,11 +44,6 @@ export default function Login() {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-4 space-y-4">
-            <div className="space-y-2">
-              <h3 className="font-medium text-center">Please verify you are human</h3>
-              <Captcha onVerify={handleCaptchaVerify} />
-            </div>
-
             <Tabs defaultValue="email">
               <TabsList className="grid grid-cols-2 mb-4">
                 <TabsTrigger value="email">Email & Password</TabsTrigger>
@@ -56,11 +51,21 @@ export default function Login() {
               </TabsList>
               
               <TabsContent value="email" className="mt-0">
-                <EmailLoginForm isLoading={isLoading} setIsLoading={setIsLoading} captchaVerified={captchaVerified} />
+                <EmailLoginForm 
+                  isLoading={isLoading} 
+                  setIsLoading={setIsLoading} 
+                  captchaVerified={captchaVerified} 
+                  onCaptchaVerify={handleCaptchaVerify}
+                />
               </TabsContent>
               
               <TabsContent value="otp" className="mt-0">
-                <OtpLoginForm isLoading={isLoading} setIsLoading={setIsLoading} captchaVerified={captchaVerified} />
+                <OtpLoginForm 
+                  isLoading={isLoading} 
+                  setIsLoading={setIsLoading} 
+                  captchaVerified={captchaVerified}
+                  onCaptchaVerify={handleCaptchaVerify}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>

@@ -17,6 +17,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
+import { Captcha } from "@/components/Captcha";
 
 const emailFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -29,9 +30,10 @@ interface EmailLoginFormProps {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   captchaVerified: boolean;
+  onCaptchaVerify: () => void;
 }
 
-export function EmailLoginForm({ isLoading, setIsLoading, captchaVerified }: EmailLoginFormProps) {
+export function EmailLoginForm({ isLoading, setIsLoading, captchaVerified, onCaptchaVerify }: EmailLoginFormProps) {
   const navigate = useNavigate();
   
   const form = useForm<EmailFormValues>({
@@ -110,6 +112,12 @@ export function EmailLoginForm({ isLoading, setIsLoading, captchaVerified }: Ema
             </FormItem>
           )}
         />
+        
+        <div className="space-y-2">
+          <h3 className="font-medium text-sm">Please verify you are human</h3>
+          <Captcha onVerify={onCaptchaVerify} />
+        </div>
+        
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <input type="checkbox" id="remember" className="rounded border-gray-300" />
