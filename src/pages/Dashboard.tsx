@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -8,11 +7,13 @@ import { BarChart3, BookOpen, Users, Activity, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import MarketAnalysis from "@/components/MarketAnalysis";
 import TradingPrediction from "@/components/TradingPrediction";
+import { getCourseEnrollments, EnrollmentData } from "@/utils/courseEnrollments";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("User");
   const [activeTab, setActiveTab] = useState("overview");
+  const [enrolledCourses, setEnrolledCourses] = useState<EnrollmentData[]>([]);
   
   useEffect(() => {
     // In a real app, you would check for user authentication here
@@ -30,6 +31,10 @@ const Dashboard = () => {
       // If no user found in storage, redirect to login
       navigate("/login");
     }
+
+    // Load enrolled courses
+    const courses = getCourseEnrollments();
+    setEnrolledCourses(courses);
   }, [navigate]);
   
   const handleLogout = () => {
@@ -124,7 +129,7 @@ const Dashboard = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {[
-                  { title: "Courses Enrolled", icon: <BookOpen className="h-8 w-8 text-blue-500" />, value: "3", color: "blue" },
+                  { title: "Courses Enrolled", icon: <BookOpen className="h-8 w-8 text-blue-500" />, value: enrolledCourses.length.toString(), color: "blue" },
                   { title: "Learning Hours", icon: <Activity className="h-8 w-8 text-green-500" />, value: "24", color: "green" },
                   { title: "Trading Sessions", icon: <BarChart3 className="h-8 w-8 text-purple-500" />, value: "12", color: "purple" },
                   { title: "Community Members", icon: <Users className="h-8 w-8 text-amber-500" />, value: "1,024", color: "amber" }
@@ -210,46 +215,62 @@ const Dashboard = () => {
               className="bg-white p-6 rounded-lg shadow"
             >
               <h2 className="text-xl font-semibold mb-4">My Enrolled Courses</h2>
-              <div className="space-y-6">
-                {[
-                  { title: "Trading Fundamentals", progress: 100, instructor: "John Smith", lastAccessed: "2 days ago" },
-                  { title: "Technical Analysis Mastery", progress: 65, instructor: "Sarah Johnson", lastAccessed: "Yesterday" },
-                  { title: "Risk Management Strategies", progress: 30, instructor: "Michael Brown", lastAccessed: "Today" }
-                ].map((course, index) => (
-                  <motion.div 
-                    key={index}
-                    whileHover={{ scale: 1.01 }}
-                    className="border rounded-lg p-4"
-                  >
-                    <div className="flex justify-between mb-2">
-                      <h3 className="font-medium">{course.title}</h3>
-                      <span className="text-sm text-gray-500">Last accessed: {course.lastAccessed}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600 mb-3">
-                      <span>Instructor: {course.instructor}</span>
-                    </div>
-                    <div className="mb-1 flex justify-between">
-                      <span className="text-sm">Progress</span>
-                      <span className="text-sm font-medium">{course.progress}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div 
-                        className="bg-primary h-2.5 rounded-full" 
-                        style={{ width: `${course.progress}%` }}
-                      ></div>
-                    </div>
-                    <div className="mt-4">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="text-primary border-primary/30 hover:border-primary"
-                      >
-                        {course.progress === 100 ? "Review Course" : "Continue Learning"}
-                      </Button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              {enrolledCourses.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 mb-4">You haven't enrolled in any courses yet.</p>
+                  <Button onClick={() => navigate("/courses")}>Browse Courses</Button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {enrolledCourses.map((course, index) => (
+                    <motion.div 
+                      key={course.courseId}
+                      whileHover={{ scale: 1.01 }}
+                      className="border rounded-lg p-4"
+                    >
+                      <div className="flex justify-between mb-2">
+                        <h3 className="font-medium">{course.courseTitle}</h3>
+                        <span className="text-sm text-gray-500">
+                          Last accessed: {new Date(course.lastAccessed).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-600 mb-3">
+                        <span>Instructor: {course.instructor}</span>
+                      </div>
+                      <div className="mb-1 flex justify-between">
+                        <span className="text-sm">Progress</span>
+                        <span className="text-sm font-medium">{course.progress}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                          className="bg-primary h-2.5 rounded-full" 
+                          style={{ width: `${course.progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="mt-4 flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-primary border-primary/30 hover:border-primary"
+                          onClick={() => navigate(`/course/${course.courseId}`)}
+                        >
+                          {course.progress === 100 ? "Review Course" : "Continue Learning"}
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => {
+                            const updatedCourses = getCourseEnrollments();
+                            setEnrolledCourses(updatedCourses);
+                          }}
+                        >
+                          Refresh
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
             </motion.div>
           )}
           

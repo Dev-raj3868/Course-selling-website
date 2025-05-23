@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,11 +8,13 @@ import Footer from "@/components/Footer";
 import { EnrollmentModal } from "@/components/EnrollmentModal";
 import { Course, coursesData } from "@/data/coursesData";
 import { useToast } from "@/components/ui/use-toast";
+import { isEnrolledInCourse } from "@/utils/courseEnrollments";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const [course, setCourse] = useState<Course | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -21,6 +22,8 @@ const CourseDetail = () => {
     const foundCourse = coursesData.find(c => c.id === Number(id));
     if (foundCourse) {
       setCourse(foundCourse);
+      // Check if user is already enrolled
+      setIsEnrolled(isEnrolledInCourse(foundCourse.id));
     } else {
       // Course not found
       toast({
@@ -286,13 +289,27 @@ const CourseDetail = () => {
                     <span>Limited time offer</span>
                   </div>
                   
-                  <Button className="w-full mb-3 bg-secondary hover:bg-secondary/90 text-black" onClick={() => setShowModal(true)}>
-                    Enroll Now
-                  </Button>
-                  
-                  <Button variant="outline" className="w-full">
-                    Add to Wishlist
-                  </Button>
+                  {isEnrolled ? (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                        <span className="text-green-700 font-medium">You're enrolled in this course</span>
+                      </div>
+                      <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => window.location.href = '/dashboard'}>
+                        Go to Dashboard
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <Button className="w-full mb-3 bg-secondary hover:bg-secondary/90 text-black" onClick={() => setShowModal(true)}>
+                        Enroll Now
+                      </Button>
+                      
+                      <Button variant="outline" className="w-full">
+                        Add to Wishlist
+                      </Button>
+                    </>
+                  )}
                 </div>
                 
                 <div className="space-y-3 text-sm">

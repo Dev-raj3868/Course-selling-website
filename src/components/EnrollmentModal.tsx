@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { CreditCard, Mail, ShieldCheck } from "lucide-react";
 import { Captcha } from "./Captcha";
 import { loadRazorpay } from "@/utils/payments";
+import { addCourseEnrollment } from "@/utils/courseEnrollments";
 
 interface EnrollmentModalProps {
   course: Course;
@@ -103,6 +104,9 @@ export function EnrollmentModal({ course, isOpen, onClose }: EnrollmentModalProp
             title: "Payment Successful",
             description: `Payment ID: ${response.razorpay_payment_id}`,
           });
+          
+          // Add course to enrollments after successful payment
+          addCourseEnrollment(course.id, course.title, course.instructor);
           
           // In a real application, you would verify this payment on your server
           setTimeout(() => {
